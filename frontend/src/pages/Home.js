@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useWorkoutsContext } from '../hooks/useWorkoutsContext';
 import { useAuthContext } from '../hooks/useAuthContext';
 
-// components
+// Components
 import WorkoutDetails from '../components/WorkoutDetails';
 import WorkoutForm from '../components/WorkoutForm';
 import SearchBar from '../components/SearchBar';
@@ -12,11 +12,7 @@ const Home = () => {
     const { user } = useAuthContext();
 
     const [searchQuery, setSearchQuery] = useState('');
-
-    // ✅ Fix: Filter through `workouts` correctly
-    const filteredItems = workouts
-        ? workouts.filter((item) => item.title.toLowerCase().includes(searchQuery.toLowerCase()))
-        : [];
+    const [sortBy, setSortBy] = useState('');
 
     useEffect(() => {
         const fetchWorkouts = async () => {
@@ -36,15 +32,35 @@ const Home = () => {
         fetchWorkouts();
     }, [dispatch, user]);
 
+    const filteredItems = workouts
+        ? workouts.filter((item) => item.title.toLowerCase().includes(searchQuery.toLowerCase()))
+        : [];
+
+    const sortedWorkouts = [...filteredItems].sort((a, b) => {
+        if (sortBy === "newest") return new Date(b.createdAt) - new Date(a.createdAt); // Newest first
+        if (sortBy === "oldest") return new Date(a.createdAt) - new Date(b.createdAt); // Oldest first
+        if (sortBy === "title") return a.title.localeCompare(b.title); // Alphabetical
+        return 0;
+    });
+
     return (
         <div className="home">
-            <div>
-                <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+            <div className="workouts-section">
+                <div className="search-and-sort-section">
+                    <SearchBar searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+                    <div className="sorting">
+                        <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
+                            <option value="" disabled>Sort by</option>
+                            <option value="newest">Newest</option>
+                            <option value="oldest">Oldest</option>
+                            <option value="title">Title</option>
+                        </select>
+                    </div>
+                </div>
 
                 <div className='workouts'>
-                    {/* ✅ Display filtered workouts */}
-                    {filteredItems.length > 0 ? (
-                        filteredItems.map((workout) => (
+                    {sortedWorkouts.length > 0 ? (
+                        sortedWorkouts.map((workout) => (
                             <WorkoutDetails key={workout._id} workout={workout} />
                         ))
                     ) : (
