@@ -64,7 +64,7 @@ const WorkoutEdit = () => {
 
     return (
             <form onSubmit={handleSubmit} className="edit">
-                <h2>Edit Workout</h2>
+                <h3>Edit Workout</h3>
 
                 <label>Title:</label>
                 <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} required />
