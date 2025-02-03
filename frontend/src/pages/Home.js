@@ -51,9 +51,9 @@ const Home = () => {
                     <div className="sorting">
                         <select value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
                             <option value="" disabled>Sort by</option>
+                            <option value="title">Title</option>
                             <option value="newest">Newest</option>
                             <option value="oldest">Oldest</option>
-                            <option value="title">Title</option>
                         </select>
                     </div>
                 </div>

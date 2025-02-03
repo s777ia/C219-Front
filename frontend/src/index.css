@@ -34,7 +34,7 @@ header a {
 }
 
 header a:hover {
-  color: var(--hover)
+  color: var(--hover);
 }
 
 .pages {
@@ -166,7 +166,7 @@ nav {
 
 nav a,
 nav button {
-  margin-left: 10px;
+  margin-left: 20px;
 }
 
 nav button {
@@ -183,6 +183,10 @@ nav button {
 nav button:hover {
   color: var(--hover);
   border: 2px solid var(--hover)
+}
+
+nav span {
+  color: var(--text)
 }
 
 /* auth forms */
